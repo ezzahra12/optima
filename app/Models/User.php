@@ -1,32 +1,39 @@
 <?php
-
 namespace App\Models;
-
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+    protected $fillable = [
+        'nom',
+         'prenom',
+          'email',
+          'password',
+          'telephone',
+          'salaire',
+          'role',
+          'departement_id'
+    ];
+
+
+    public function departement(): BelongsTo {
+        return $this->belongsTo(Departement::class);
     }
+
+ public function absences() {
+    return $this->hasMany(Absence::class);
+}
+
+public function taches() {
+    return $this->belongsToMany(Tache::class);
+}
+
+public function projetsGeres() {
+    return $this->hasMany(Projet::class, 'chef_projet_id');
+}
 }
