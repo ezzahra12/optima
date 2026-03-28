@@ -12,7 +12,7 @@ class ProjetController extends Controller
     {
         $projets = Projet::with('user')->get();
         $users = User::all();
-        return view('projets.index', compact('projets', 'users'));
+        return view('admin.projets.index', compact('projets', 'users'));
     }
 
 public function store(StoreProjetRequest $request)
@@ -33,30 +33,25 @@ public function destroy(Projet $projet)
     $projet->delete();
     return back()->with('success', 'Le projet a été supprimé avec succès !');
 }
-// 1. كيعرض لينا الصفحة ديال Edit
 public function edit(Projet $projet)
 {
-    return view('projets.edit', compact('projet'));
+    return view('admin.projets.edit', compact('projet'));
 }
 
-// 2. كياخد المعلومات الجديدة وكيحدثها
 public function update(Request $request, $id)
 {
-    // 1. كنجيبو المشروع
     $projet = Projet::find($id);
 
     if (!$projet) {
         return back()->with('error', 'Projet introuvable');
     }
 
-    // 2. التحديث (تأكدي من أسماء الحقول اللي في الفورم)
     $projet->nom = $request->nom;
     $projet->budget = $request->budget;
     $projet->date_debut = $request->date_debut;
 
-    // 3. الحفظ الضروري
     $projet->save();
 
-    return redirect()->route('projets.index')->with('success', 'Modifié avec succès !');
+    return redirect()->route('admin.projets.index')->with('success', 'Modifié avec succès !');
 }
 }

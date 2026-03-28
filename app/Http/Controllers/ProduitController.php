@@ -8,7 +8,7 @@ class ProduitController extends Controller
 {
     public function index() {
         $produits = Produit::all();
-        return view('produits.index', compact('produits'));
+        return view('admin.produits.index', compact('produits'));
     }
     public function store(Request $request) {
         Produit::create($request->all());
