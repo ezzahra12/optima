@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('produits', function (Blueprint $table) {
-       $table->id();
-        $table->string('nom');
-        $table->decimal('prix_catalogue', 10, 2);
-        $table->integer('quantite_en_stock')->default(0);
-        $table->integer('seuil_alerte')->default(5);
+       Schema::create('produits', function (Blueprint $table) {
+        $table->id();
+        $table->string('designation'); // اسم المنتج
+        $table->integer('quantite');   // الكمية
+        $table->double('prix_unitaire'); // الثمن
+        $table->string('categorie');   // الفئة (مثلاً: Materiel, Bureau...)
         $table->timestamps();
-        });
-    }
+    });
+}
+    
 
     /**
      * Reverse the migrations.
