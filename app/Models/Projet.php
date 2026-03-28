@@ -11,12 +11,10 @@ class Projet extends Model
     protected $fillable = ['nom', 'description', 'date_debut', 'date_fin_prevue', 'statut','budget',
     'chef_projet_id'];
 
-    // Relation : Un projet contient plusieurs tâches (Composition)
     public function taches() {
         return $this->hasMany(Tache::class);
     }
 
-    // Logique métier : calculer l'avancement
     public function getAvancementAttribute() {
         $total = $this->taches()->count();
         if ($total == 0) return 0;

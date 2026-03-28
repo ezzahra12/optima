@@ -18,7 +18,6 @@ return new class extends Migration
         $table->date('date_limite');
         $table->enum('statut', ['a_faire', 'en_cours', 'termine'])->default('a_faire');
 
-        // Relation avec le Projet (Clé étrangère)
         $table->foreignId('projet_id')->constrained()->onDelete('cascade');
         $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
 

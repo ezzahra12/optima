@@ -17,7 +17,6 @@ return new class extends Migration
         $table->date('date_debut');
         $table->date('date_fin_prevue');
         $table->decimal('budget', 15, 2);
-        // Le chef de projet est un User avec le rôle 'chef_projet'
         $table->foreignId('chef_projet_id')->constrained('users');
         $table->timestamps();
         });

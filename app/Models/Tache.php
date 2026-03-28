@@ -14,11 +14,9 @@ class Tache extends Model
         return $this->belongsTo(Projet::class);
     }
 
-    // Les employés assignés à cette tâche
     public function users(): BelongsToMany {
         return $this->belongsToMany(User::class);
     }
-    // Méthode métier du diagramme
     public function modifierStatut(string $nouveauStatut)
     {
         $this->update(['statut' => $nouveauStatut]);

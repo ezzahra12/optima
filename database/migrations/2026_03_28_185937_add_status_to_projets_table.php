@@ -11,22 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('produits', function (Blueprint $table) {
-        $table->id();
-        $table->string('designation');
-        $table->integer('quantite');
-        $table->double('prix_unitaire');
-        $table->string('categorie');  
-        $table->timestamps();
-    });
-}
-
+        Schema::table('projets', function (Blueprint $table) {
+            $table->string('statut')->default('En cours')->after('budget');
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('produits');
+        Schema::table('projets', function (Blueprint $table) {
+            //
+        });
     }
 };
