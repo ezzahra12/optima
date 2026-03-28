@@ -6,14 +6,20 @@
     <title>Gestion Utilisateurs | Optima</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex">
+<body class="bg-gray-100 flex font-sans text-gray-800">
 
-    <aside class="w-64 bg-slate-800 min-h-screen text-white p-6 shadow-xl">
-        <h1 class="text-xl font-bold border-b border-slate-700 pb-4 mb-6">Optima ERP</h1>
-        <nav class="space-y-4">
-            <a href="/dashboard" class="block text-gray-300 hover:text-white">🏠 Dashboard</a>
-            <a href="/users" class="block text-blue-400 font-bold underline">👥 Utilisateurs</a>
-            <a href="#" class="block text-gray-300 hover:text-white">📁 Projets</a>
+   <aside class="w-64 bg-white border-r hidden md:block min-h-screen shrink-0 shadow-sm">
+        <div class="p-6">
+            <h1 class="text-2xl font-black text-blue-600 tracking-tighter italic">OPTIMA</h1>
+            <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Admin Panel</p>
+        </div>
+        <nav class="mt-6 px-4 space-y-2">
+            <a href="{{ route('admin.dashboard') }}" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition">Tableau de bord</a>
+            <a href="{{ route('admin.produits.index') }}" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition">Produits</a>
+            <a href="{{ route('admin.projets.index') }}" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition">Projets</a>
+            <a href="{{ route('admin.users.index') }}" class="block p-3 bg-blue-50 text-blue-700 rounded-lg font-bold text-sm">Utilisateurs</a>
+            <a href="{{ route('admin.departements.index') }}" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition">Départements</a>
+
         </nav>
     </aside>
 

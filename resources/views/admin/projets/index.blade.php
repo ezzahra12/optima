@@ -8,15 +8,20 @@
 </head>
 <body class="bg-gray-100 flex font-sans">
 
-    <aside class="w-56 bg-white border-r min-h-screen p-4">
-        <h1 class="text-xl font-black mb-10 text-gray-800 tracking-tighter text-center italic border-b pb-4">OPTIMA ERP</h1>
-        <nav class="flex flex-col gap-2">
-            <a href="/dashboard" class="p-2 text-gray-600 hover:bg-gray-100 rounded text-sm">Tableau de bord</a>
-            <a href="/users" class="p-2 text-gray-600 hover:bg-gray-100 rounded text-sm">Utilisateurs</a>
-            <a href="/produits" class="p-2 text-gray-600 hover:bg-gray-100 rounded text-sm">Stock</a>
-            <a href="/projets" class="p-2 bg-blue-50 text-blue-700 font-bold rounded text-sm border-l-4 border-blue-600">Projets</a>
-        </nav>
-    </aside>
+  <aside class="w-64 bg-white border-r hidden md:block min-h-screen shrink-0 shadow-sm">
+            <div class="p-6">
+                <h1 class="text-2xl font-black text-blue-600 tracking-tighter">OPTIMA</h1>
+                <p class="text-[10px] text-gray-400 uppercase font-bold">Admin Panel</p>
+            </div>
+            <nav class="mt-6 px-4 space-y-2">
+                <a href="/dashboard" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition">Tableau de bord</a>
+                <a href="/produits" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition"> Produits</a>
+                <a href="/projets" class="block p-3 bg-blue-50 text-blue-700 rounded-lg font-bold text-sm">Projets</a>
+                <a href="/users" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition">Utilisateurs</a>
+            <a href="{{ route('admin.departements.index') }}" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition">Départements</a>
+
+            </nav>
+        </aside>
 
     <main class="flex-1 p-8">
 
