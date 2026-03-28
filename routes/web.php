@@ -17,4 +17,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
 require __DIR__.'/auth.php';
+use App\Http\Controllers\UserController;
+Route::middleware(['auth'])->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+    Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
+});
+
+use App\Http\Controllers\ProduitController;
+
+Route::get('/produits', [ProduitController::class, 'index'])->name('produits.index');
+Route::post('/produits', [ProduitController::class, 'store'])->name('produits.store');
