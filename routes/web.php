@@ -33,19 +33,32 @@ Route::post('/produits', [ProduitController::class, 'store'])->name('produits.st
 
 use App\Http\Controllers\ProjetController;
 
-// عرض صفحة المشاريع
 Route::get('/projets', [ProjetController::class, 'index'])->name('projets.index');
 
-// استقبال البيانات من الـ Form وحفظ المشروع الجديد
 Route::post('/projets', [ProjetController::class, 'store'])->name('projets.store');
 Route::delete('/projets/{projet}', [ProjetController::class, 'destroy'])->name('projets.destroy');
 
-// صفحة التعديل (كتعطينا الفورم عامر بالمعلومات القديمة)
 Route::get('/projets/{projet}/edit', [ProjetController::class, 'edit'])->name('projets.edit');
 
-// عملية التحديث (كتسجل التغييرات في الداتابيز)
 Route::put('/projets/{projet}', [ProjetController::class, 'update'])->name('projets.update');
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartementController;
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('adminDashboard');
+
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/produits', [ProduitController::class, 'index'])->name('produits.index');
+    Route::post('/produits', [ProduitController::class, 'store'])->name('produits.store');
+
+    Route::get('/projets', [ProjetController::class, 'index'])->name('projets.index');
+    Route::post('/projets', [ProjetController::class, 'store'])->name('projets.store');
+    Route::resource('users', UserController::class);
+    Route::resource('departements', DepartementController::class);
+});
+
+
