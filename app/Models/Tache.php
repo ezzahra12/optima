@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tache extends Model
 {
-    protected $fillable = ['titre', 'description', 'date_limite', 'statut', 'projet_id'];
+    protected $fillable = ['titre', 'description', 'date_limite','user_id', 'statut', 'projet_id'];
 
     public function projet(): BelongsTo {
         return $this->belongsTo(Projet::class);
@@ -20,5 +20,9 @@ class Tache extends Model
     public function modifierStatut(string $nouveauStatut)
     {
         $this->update(['statut' => $nouveauStatut]);
+    }
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

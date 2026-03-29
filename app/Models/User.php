@@ -36,4 +36,7 @@ public function taches() {
 public function projetsGeres() {
     return $this->hasMany(Projet::class, 'chef_projet_id');
 }
+public function projets() {
+    return $this->belongsToMany(Projet::class, 'affectations');
+}
 }

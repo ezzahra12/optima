@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Projet extends Model
 {
     protected $fillable = ['nom', 'description', 'date_debut', 'date_fin_prevue', 'statut','budget',
-    'chef_projet_id'];
+    'chef_projet_id','departement_id',];
 
     public function taches() {
         return $this->hasMany(Tache::class);
@@ -25,4 +25,11 @@ class Projet extends Model
     {
         return $this->belongsTo(User::class, 'chef_projet_id');
     }
+public function departement()
+{
+    return $this->belongsTo(Departement::class);
+}
+public function membres() {
+    return $this->belongsToMany(User::class, 'affectations');
+}
 }
