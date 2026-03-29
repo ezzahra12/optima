@@ -7,9 +7,30 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+Route::get('/pending', function () {
+    return view('pending');
+})->middleware('auth')->name('pending');
+
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    $user = auth()->user();
+
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    if ($user->role === 'chef_projet') {
+        return redirect()->route('chef.dashboard');
+    }
+
+    return redirect()->route('pending');
+})->middleware(['auth'])->name('dashboard');
+
+Route::get('/pending', function () {
+    return view('pending');
+})->middleware('auth')->name('pending');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -60,5 +81,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('departements', DepartementController::class);
 });
+use App\Http\Controllers\Chef\ProjetController as ChefProjetController;
+use App\Http\Controllers\Chef\ProjetDetailsController;
+Route::prefix('chef')->name('chef.')->group(function () {
+    Route::get('/dashboard', [ChefProjetController::class, 'dashboard'])->name('dashboard');
+    Route::get('/projets', [ChefProjetController::class, 'index'])->name('projets.index');
 
+    Route::get('/projets/{id}', [ProjetDetailsController::class, 'show'])->name('projets.show');
+  Route::post('/chef/projets/{id}/add-membre', [ProjetDetailsController::class, 'addMembre'])->name('projets.addMembre');
+  Route::delete('/taches/{id}', [ProjetDetailsController::class, 'destroyTache'])->name('taches.destroy');
 
+    Route::post('/taches', [ProjetDetailsController::class, 'storeTache'])->name('taches.store');
+    Route::resource('projets', ChefProjetController::class);
+
+});
+
+Route::post('/projets/{id}/add-membre', [ProjetDetailsController::class, 'addMembre'])->name('projets.addMembre');
