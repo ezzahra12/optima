@@ -59,12 +59,12 @@
                                     @csrf
                                     @method('PATCH')
                                     <select name="role" class="text-sm border-gray-300 rounded p-1 focus:ring-blue-500">
-    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>Utilisateur (Standard)</option>
+ <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>Utilisateur Simple</option>
     <option value="employe" {{ $user->role == 'employe' ? 'selected' : '' }}>Employé</option>
-    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Administrateur</option>
+    <option value="chef_projet" {{ $user->role == 'chef_projet' ? 'selected' : '' }}>Chef de Projet</option>
     <option value="rh" {{ $user->role == 'rh' ? 'selected' : '' }}>Ressources Humaines</option>
-    <option value="chef de projet" {{ $user->role == 'chef de projet' ? 'selected' : '' }}>Chef de Projet</option>
     <option value="comptable" {{ $user->role == 'comptable' ? 'selected' : '' }}>Comptable</option>
+    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Administrateur</option>
                                     </select>
                                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs font-bold shadow-sm transition">
                                         VALIDER

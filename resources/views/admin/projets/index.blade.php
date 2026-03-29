@@ -19,7 +19,14 @@
                 <a href="/projets" class="block p-3 bg-blue-50 text-blue-700 rounded-lg font-bold text-sm">Projets</a>
                 <a href="/users" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition">Utilisateurs</a>
             <a href="{{ route('admin.departements.index') }}" class="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition">Départements</a>
-
+ <div class="mt-auto pb-6">
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="w-full text-left p-3 text-red-500 hover:bg-red-50 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                <span>🚪</span> Déconnexion
+            </button>
+        </form>
+    </div>
             </nav>
         </aside>
 
@@ -54,6 +61,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="flex flex-col">
+    <label class="text-[10px] font-bold text-gray-500 mb-1 uppercase tracking-tight">Département</label>
+    <select name="departement_id" required class="border p-2 text-sm rounded w-52 bg-white focus:border-blue-500 outline-none">
+        <option value="">-- Sélectionner --</option>
+        @foreach($departements as $dept)
+            <option value="{{ $dept->id }}">{{ $dept->nom }}</option>
+        @endforeach
+    </select>
+</div>
 
                 <div class="flex flex-col">
                     <label class="text-[10px] font-bold text-gray-500 mb-1 uppercase tracking-tight">Date début</label>
@@ -92,11 +108,15 @@
     {{ number_format($projet->budget, 2, ',', ' ') }} DH
 </td>
                         <td class="p-4 text-sm text-gray-400 font-mono">{{ $projet->date_debut }}</td>
+                        <td class="p-4 text-sm text-gray-600 font-bold uppercase text-[10px]">
+    {{ $projet->departement->nom ?? 'N/A' }}
+</td>
                         <td class="p-4 text-center">
                             <span class="px-2 py-0.5 border border-blue-400 text-blue-600 text-[10px] font-black uppercase rounded shadow-sm">
                                 {{ $projet->statut }}
                             </span>
                         </td>
+
                         <td class="p-4 text-right">
     <form action="{{ route('projets.destroy', $projet->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">
         @csrf
@@ -108,7 +128,7 @@
 </td>
 <td>
 <button type="button"
-    onclick="openEditModal({{ $projet->id }}, '{{ $projet->nom }}', {{ $projet->budget }}, '{{ $projet->date_debut }}')"
+    onclick="openEditModal({{ $projet->id }}, '{{ $projet->nom }}', {{ $projet->budget }}, '{{ $projet->date_debut }}', {{ $projet->departement_id }})"
     class="text-blue-500 hover:text-blue-700 text-[10px] font-black uppercase border border-blue-200 px-2 py-1 rounded hover:bg-blue-50">
     Modifier
 </button>
@@ -145,6 +165,14 @@
                         <input type="number" id="edit_budget" name="budget" class="w-full border p-2 text-sm rounded outline-none">
                     </div>
                     <div>
+    <label class="text-[10px] font-bold text-gray-500 uppercase">Département</label>
+    <select id="edit_departement_id" name="departement_id" class="w-full border p-2 text-sm rounded outline-none focus:border-blue-500">
+        @foreach($departements as $dept)
+            <option value="{{ $dept->id }}">{{ $dept->nom }}</option>
+        @endforeach
+    </select>
+</div>
+                    <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Date Début</label>
                         <input type="date" id="edit_date_debut" name="date_debut" class="w-full border p-2 text-sm rounded outline-none">
                     </div>
@@ -158,22 +186,18 @@
     </div>
 </div>
     <script>
-        // الاختفاء التلقائي لرسالة النجاح بعد 3 ثواني
         setTimeout(() => {
             const alert = document.querySelector('.bg-green-50');
             if(alert) alert.remove();
         }, 3000);
-        function openEditModal(id, nom, budget, date) {
-    // تحديد المسار (Action) ديال الفورم على حساب الـ ID
+        function openEditModal(id, nom, budget, date, departement_id) {
     const form = document.getElementById('editForm');
     form.action = `/projets/${id}`;
 
-    // تعمير الخانات بالمعلومات القديمة
     document.getElementById('edit_nom').value = nom;
     document.getElementById('edit_budget').value = budget;
     document.getElementById('edit_date_debut').value = date;
-
-    // إظهار الـ Modal
+   document.getElementById('edit_departement_id').value = departement_id;
     document.getElementById('editModal').classList.remove('hidden');
 }
 
