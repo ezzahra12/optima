@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Chef;
 use App\Models\Projet;
 use App\Models\User;
-use App\Models\Departement;
+ use App\Http\Requests\StoreProjetRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-   use App\Http\Requests\StoreProjetRequest;
+
 
 class ProjetController extends Controller
 {
@@ -13,9 +14,14 @@ class ProjetController extends Controller
     {
         $projets = Projet::with('user')->get();
         $users = User::all();
-         $departements = Departement::all();
-        return view('admin.projets.index', compact('projets', 'users','departements'));
+        return view('chef.dashboard', compact('projets', 'users'));
     }
+    public function show(Projet $projet) {
+    $employes = User::where('role', 'employe')->get();
+    $chef_departements = auth()->user()->departements;
+
+    return view('chef.projets.show', compact('projet', 'employes','chef_departements'));
+}
 
 public function store(StoreProjetRequest $request)
 {
@@ -25,13 +31,24 @@ public function store(StoreProjetRequest $request)
         'date_debut' => $request->date_debut,
         'date_fin_prevue' => now()->addMonths(3),
         'budget' => $request->budget ?? 0,
-        'chef_projet_id' => $request->user_id,
-        'departement_id' => $request->departement_id,
-
+        'chef_projet_id' => auth()->id(),
     ]);
 
     return back()->with('success', 'Projet ajouté avec succès !');
 }
+
+public function dashboard()
+{
+    $projets = Projet::where('chef_projet_id', auth()->id())
+        ->withCount('taches')
+        ->withCount(['taches as taches_terminees_count' => function ($query) {
+            $query->where('statut', 'Terminé');
+        }])
+        ->get();
+
+    return view('chef.dashboard', compact('projets'));
+}
+
 public function destroy(Projet $projet)
 {
     $projet->delete();
@@ -59,3 +76,4 @@ public function update(Request $request, $id)
     return redirect()->route('admin.projets.index')->with('success', 'Modifié avec succès !');
 }
 }
+
