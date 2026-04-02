@@ -10,19 +10,20 @@ use Illuminate\Http\Request;
 
 class ProjetController extends Controller
 {
-   public function index()
-    {
-        $projets = Projet::with('user')->get();
-        $users = User::all();
-        return view('chef.dashboard', compact('projets', 'users'));
-    }
-    public function show(Projet $projet) {
-    $employes = User::where('role', 'employe')->get();
-    $chef_departements = auth()->user()->departements;
+public function index()
+{
+    $projets = Projet::where('chef_projet_id', auth()->id())
+        ->with(['user', 'departement'])
+        ->get();
 
-    return view('chef.projets.show', compact('projet', 'employes','chef_departements'));
+    $projetsGroupes = $projets->groupBy('departement_id');
+
+
+    $departements = auth()->user()->departements ?? collect();
+
+
+    return view('chef.dashboard', compact('projets', 'projetsGroupes', 'departements'));
 }
-
 public function store(StoreProjetRequest $request)
 {
 

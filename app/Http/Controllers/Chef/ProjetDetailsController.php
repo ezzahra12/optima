@@ -51,7 +51,7 @@ public function destroyTache($id)
             'titre' => $request->titre,
             'user_id' => $request->user_id,
             'projet_id' => $request->projet_id,
-            'statut' => 'en attente',
+            'statut' => 'a_faire',
             'date_limite' => $request->date_limite,
         ]);
 
