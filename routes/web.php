@@ -2,12 +2,26 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Employe\EmpDashboardController;
+use App\Http\Controllers\Employe\TacheController;
+use App\Http\Controllers\Employe\AbsenceController as EmployeAbsence;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::middleware(['auth'])->prefix('employe')->name('employe.')->group(function () {
 
+    Route::get('/dashboard', [EmpDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/taches', [TacheController::class, 'index'])->name('taches.index');
+
+    Route::get('/taches/{id}', [TacheController::class, 'show'])->name('taches.show');
+
+    Route::patch('/taches/{id}/status', [TacheController::class, 'updateStatus'])->name('taches.updateStatus');
+   Route::get('/absences', [EmployeAbsence::class, 'index'])->name('absences.index');
+    Route::post('/absences', [EmployeAbsence::class, 'store'])->name('absences.store');
+});
 
 Route::get('/pending', function () {
     return view('pending');
@@ -96,4 +110,4 @@ Route::prefix('chef')->name('chef.')->group(function () {
 
 });
 
-Route::post('/projets/{id}/add-membre', [ProjetDetailsController::class, 'addMembre'])->name('projets.addMembre');
+
