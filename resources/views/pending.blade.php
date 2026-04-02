@@ -49,9 +49,21 @@
             </div>
         </div>
 
-    @else
-       <script>window.location.href = "/dashboard";</script>
-    @endif
+ @else
+    @php
+        $user = auth()->user();
+        if ($user->role === 'admin') {
+            $url = route('admin.dashboard');
+        } elseif ($user->role === 'chef_projet') {
+            $url = route('chef.dashboard');
+        } elseif ($user->role === 'employe') {
+            $url = route('employe.dashboard');
+        } else {
+            $url = '/';
+        }
+    @endphp
+    <script>window.location.href = "{{ $url }}";</script>
+@endif
 
 </body>
 </html>
