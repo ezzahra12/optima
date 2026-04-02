@@ -28,11 +28,11 @@ class RegisteredUserController extends Controller
      *
      * @throws ValidationException
      */
-   public function store(Request $request): RedirectResponse
+  public function store(Request $request): RedirectResponse
 {
     $request->validate([
         'nom' => ['required', 'string', 'max:255'],
-        'prenom' => ['required', 'string', 'max:255'], // Zid hadi
+        'prenom' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
     ]);
@@ -42,12 +42,12 @@ class RegisteredUserController extends Controller
         'prenom' => $request->prenom,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        'role' => 'user', 
+        'role' => 'user',
     ]);
 
     event(new Registered($user));
     Auth::login($user);
 
-    return redirect(route('dashboard', absolute: false));
+    return redirect()->route('pending');
 }
 }
