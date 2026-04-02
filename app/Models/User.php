@@ -25,9 +25,7 @@ class User extends Authenticatable
         return $this->belongsTo(Departement::class);
     }
 
- public function absences() {
-    return $this->hasMany(Absence::class);
-}
+
 
 public function taches() {
     return $this->belongsToMany(Tache::class);
@@ -38,5 +36,9 @@ public function projetsGeres() {
 }
 public function projets() {
     return $this->belongsToMany(Projet::class, 'affectations');
+}
+public function absences()
+{
+    return $this->hasMany(Absence::class);
 }
 }

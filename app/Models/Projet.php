@@ -32,4 +32,9 @@ public function departement()
 public function membres() {
     return $this->belongsToMany(User::class, 'affectations');
 }
+public function chef() {
+    return $this->belongsTo(User::class, 'user_id'); 
+}
+
+
 }
