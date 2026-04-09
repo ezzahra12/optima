@@ -10,15 +10,17 @@ use App\Models\Absence;
 class TacheController extends Controller
 {
 public function index() {
-    $taches = Tache::where('user_id', auth()->id())->get();
-    $absences = Absence::where('user_id', auth()->id())->get();
+    $taches = auth()->user()->taches;
+    $absences = auth()->user()->absences;
+    // $taches = Tache::where('user_id', auth()->id())->get();
+    // $absences = Absence::where('user_id', auth()->id())->get();
 
     return view('employe.taches.index', compact('taches', 'absences'));
 }
 public function show($id)
 {
     $tache = Tache::with(['projet.chef', 'projet.departement'])
-                ->where('user_id', auth()->id)
+                ->where('user_id', auth()->id())
                 ->findOrFail($id);
 
     return view('employe.taches.show', compact('tache'));
