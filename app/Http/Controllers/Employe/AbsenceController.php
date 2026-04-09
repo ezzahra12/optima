@@ -23,19 +23,21 @@ class AbsenceController extends Controller
 public function store(Request $request)
 {
     $validated = $request->validate([
-        'typeAbsence' => 'required|string|max:255',
-        'date_debut'  => 'required|date|after_or_equal:today',
-        'date_fin'    => 'required|date|after_or_equal:date_debut',
+        'date_debut'   => 'required|date|after_or_equal:today',
+        'nombre_jours' => 'required|integer|min:1',
+        'motif'        => 'required|string|max:255',
     ]);
+    $dateDebut = \Carbon\Carbon::parse($validated['date_debut']);
+    $dateFin = $dateDebut->copy()->addDays($validated['nombre_jours'] - 1);
 
     Auth::user()->absences()->create([
-        'typeAbsence' => $validated['typeAbsence'],
-        'date_debut'  => $validated['date_debut'],
-        'date_fin'    => $validated['date_fin'],
-        'statut'      => 'en_attente',
+        'date_debut' => $validated['date_debut'],
+        'date_fin'   => $dateFin->format('Y-m-d'),
+        'motif'      => $validated['motif'],
+        'statut'     => 'en_attente',
     ]);
 
-    return redirect()->back()->with('success', 'Demande envoyée !');
+    return redirect()->back()->with('success', 'Demande envoyée avec succès !');
 }
 
 
