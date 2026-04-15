@@ -1,51 +1,22 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optima | Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+@extends('layouts.employe')
+
+@section('title', 'Optima | Dashboard')
+
+@section('content')
     <style>
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            align-items: center; justify-content: center;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
             z-index: 50;
         }
     </style>
-</head>
-<body class="bg-gray-100 flex">
-
-    <div class="w-60 bg-white min-h-screen border-r border-gray-200">
-        <div class="p-6">
-            <h1 class="text-2xl font-bold text-indigo-600">Optima</h1>
-        </div>
-
-        <div class="px-4">
-            <p class="text-gray-400 text-xs font-bold mb-4 uppercase">Menu</p>
-
-            <a href="{{ route('employe.dashboard') }}" class="block p-3 bg-indigo-100 text-indigo-700 rounded mb-2 font-bold">
-                Tableau de bord
-            </a>
-            <a href="{{ route('employe.taches.index') }}" class="block p-3 text-gray-600 hover:bg-gray-50 rounded mb-2">
-                Mes Missions
-            </a>
-            <a href="{{ route('employe.absences.index') }}" class="block p-3 text-gray-600 hover:bg-gray-50 rounded mb-2">
-                Mes Absences
-            </a>
-
-            <hr class="my-4 border-gray-100">
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="w-full text-left p-3 text-red-500 hover:bg-red-50 rounded">
-                    Déconnexion
-                </button>
-            </form>
-        </div>
-    </div>
 
     <div class="flex-1 p-10">
 
@@ -72,7 +43,8 @@
                 <span class="text-green-500 text-xs font-bold uppercase">Terminées</span>
                 <div class="flex justify-between items-end">
                     <h3 class="text-3xl font-bold text-green-600">{{ $tachesTerminees ?? 0 }}</h3>
-                    <button onclick="ouvrirModal()" class="bg-black text-white text-xs p-2 px-3 rounded hover:bg-indigo-600">
+                    <button onclick="ouvrirModal()"
+                        class="bg-black text-white text-xs p-2 px-3 rounded hover:bg-indigo-600">
                         + Absence
                     </button>
                 </div>
@@ -95,24 +67,26 @@
                 </thead>
                 <tbody>
                     @forelse($recentTaches ?? [] as $tache)
-                    <tr class="hover:bg-gray-50">
-                        <td class="p-4 border-b font-semibold">{{ $tache->titre }}</td>
-                        <td class="p-4 border-b text-gray-600">{{ $tache->projet->nom ?? 'Standard' }}</td>
-                        <td class="p-4 border-b">
-                            @if($tache->statut == 'termine')
-                                <span class="text-green-600 font-bold text-xs uppercase">Terminé</span>
-                            @else
-                                <span class="text-orange-500 font-bold text-xs uppercase">En cours</span>
-                            @endif
-                        </td>
-                        <td class="p-4 border-b">
-                            <a href="{{ route('employe.taches.show', $tache->id) }}" class="text-indigo-600 font-bold underline">Détails</a>
-                        </td>
-                    </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 border-b font-semibold">{{ $tache->titre }}</td>
+                            <td class="p-4 border-b text-gray-600">{{ $tache->projet->nom ?? 'Standard' }}</td>
+                            <td class="p-4 border-b">
+                                @if ($tache->statut == 'termine')
+                                    <span class="text-green-600 font-bold text-xs uppercase">Terminé</span>
+                                @else
+                                    <span class="text-orange-500 font-bold text-xs uppercase">En cours</span>
+                                @endif
+                            </td>
+                            <td class="p-4 border-b">
+                                <a href="{{ route('employe.taches.show', $tache->id) }}"
+                                    class="text-indigo-600 font-bold underline">Détails</a>
+                            </td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="4" class="p-10 text-center text-gray-400">Aucune mission pour le moment.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="4" class="p-10 text-center text-gray-400">Aucune mission pour le moment.
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -127,11 +101,13 @@
                 @csrf
                 <div class="mb-4">
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Date de début</label>
-                    <input type="date" name="date_debut" required class="w-full border p-2 rounded outline-none focus:border-indigo-500">
+                    <input type="date" name="date_debut" required
+                        class="w-full border p-2 rounded outline-none focus:border-indigo-500">
                 </div>
                 <div class="mb-4">
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Durée (jours)</label>
-                    <input type="number" name="nombre_jours" min="1" required class="w-full border p-2 rounded outline-none focus:border-indigo-500">
+                    <input type="number" name="nombre_jours" min="1" required
+                        class="w-full border p-2 rounded outline-none focus:border-indigo-500">
                 </div>
                 <div class="mb-6">
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Motif</label>
@@ -139,8 +115,10 @@
                 </div>
 
                 <div class="flex gap-2">
-                    <button type="submit" class="flex-1 bg-indigo-600 text-white p-3 rounded font-bold hover:bg-indigo-700">Envoyer</button>
-                    <button type="button" onclick="fermerModal()" class="flex-1 bg-gray-100 text-gray-600 p-3 rounded font-bold">Annuler</button>
+                    <button type="submit"
+                        class="flex-1 bg-indigo-600 text-white p-3 rounded font-bold hover:bg-indigo-700">Envoyer</button>
+                    <button type="button" onclick="fermerModal()"
+                        class="flex-1 bg-gray-100 text-gray-600 p-3 rounded font-bold">Annuler</button>
                 </div>
             </form>
         </div>
@@ -148,9 +126,13 @@
 
     <script>
         var modal = document.getElementById('monModal');
-        function ouvrirModal() { modal.style.display = 'flex'; }
-        function fermerModal() { modal.style.display = 'none'; }
-    </script>
 
-</body>
-</html>
+        function ouvrirModal() {
+            modal.style.display = 'flex';
+        }
+
+        function fermerModal() {
+            modal.style.display = 'none';
+        }
+    </script>
+@endsection
