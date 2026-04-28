@@ -17,7 +17,8 @@ class User extends Authenticatable
           'telephone',
           'salaire',
           'role',
-          'departement_id'
+          'departement_id',
+        'rib',
     ];
 
 
@@ -25,20 +26,23 @@ class User extends Authenticatable
         return $this->belongsTo(Departement::class);
     }
 
+    public function taches() {
+    return $this->hasMany(Tache::class);
+    }
 
-
-public function taches() {
-    return $this->belongsToMany(Tache::class);
-}
-
-public function projetsGeres() {
+    public function projetsGeres() {
     return $this->hasMany(Projet::class, 'chef_projet_id');
-}
-public function projets() {
+    }
+    public function projets() {
     return $this->belongsToMany(Projet::class, 'affectations');
-}
-public function absences()
-{
+    }
+    public function absences()
+    {
     return $this->hasMany(Absence::class);
-}
+    }
+    public function paiements()
+    {
+    return $this->hasMany(Paiement::class);
+    }
+    
 }

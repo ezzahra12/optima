@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('absences', function (Blueprint $table) {
-          $table->id();
-        $table->foreignId('user_id')->constrained()->onDelete('cascade');
-        $table->date('date_debut');
-        $table->date('date_fin');
-        $table->string('motif');
-        $table->enum('statut', ['en_attente', 'valide', 'refuse'])->default('en_attente');
-        $table->timestamps();
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->date('date_debut');
+            $table->date('date_fin');
+            $table->string('motif');
+            $table->enum('statut', ['en_attente', 'valide', 'refuse'])->default('en_attente');
+            $table->timestamps();
         });
     }
 
