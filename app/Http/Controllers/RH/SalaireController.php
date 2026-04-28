@@ -4,6 +4,7 @@ namespace App\Http\Controllers\RH;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Paiement;
 
 class SalaireController extends Controller
 {
@@ -17,7 +18,7 @@ public function storePrime(Request $request)
         'motif' => 'required|string|max:100',
     ]);
 
-    \App\Models\Paiement::updateOrCreate(
+    Paiement::updateOrCreate(
         [
             'user_id' => $request->user_id,
             'mois' => now()->format('F Y'),
@@ -26,7 +27,7 @@ public function storePrime(Request $request)
         [
             'prime' => $request->prime,
             'motif_prime' => $request->motif,
-            'montant' => \App\Models\User::find($request->user_id)->salaire
+            'montant' => User::find($request->user_id)->salaire
         ]
     );
 
@@ -41,7 +42,7 @@ public function storeComplet(Request $request)
         'motif'   => 'nullable|string|max:255',
     ]);
 
-    \App\Models\Paiement::updateOrCreate(
+    Paiement::updateOrCreate(
         [
             'user_id' => $request->user_id,
             'mois'    => now()->format('F Y'),

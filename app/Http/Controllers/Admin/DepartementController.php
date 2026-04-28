@@ -14,7 +14,11 @@ class DepartementController extends Controller
     }
 
     public function store(Request $request) {
-        $request->validate(['nom' => 'required']);
+        $request->validate(
+                [
+                    'nom' => 'required'
+                ]
+            );
         Departement::create($request->all());
         return back()->with('success', 'Département ajouté !');
     }

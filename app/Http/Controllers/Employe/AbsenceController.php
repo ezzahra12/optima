@@ -7,7 +7,7 @@ use App\Models\Absence;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 class AbsenceController extends Controller
 {
    public function index()
@@ -27,7 +27,7 @@ public function store(Request $request)
         'nombre_jours' => 'required|integer|min:1',
         'motif'        => 'required|string|max:255',
     ]);
-    $dateDebut = \Carbon\Carbon::parse($validated['date_debut']);
+    $dateDebut = Carbon::parse($validated['date_debut']);
     $dateFin = $dateDebut->copy()->addDays($validated['nombre_jours'] - 1);
 
     Auth::user()->absences()->create([

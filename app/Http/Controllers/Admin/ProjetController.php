@@ -14,7 +14,7 @@ class ProjetController extends Controller
     {
         $projets = Projet::with('user')->get();
         $users = User::where('role', 'chef_projet')->get();
-         $departements = Departement::all();
+        $departements = Departement::all();
         return view('admin.projets.index', compact('projets', 'users','departements'));
     }
 

@@ -17,8 +17,8 @@ class DashboardController extends Controller
         $totalUsers = User::count();
         $totalBudget = Projet::sum('budget');
         $projetsEnCours = Projet::where('statut', 'En cours')->count();
-       $recentProjets = Projet::latest()->take(5)->get();
-$derniersProjets = Projet::with('departement')->latest()->take(5)->get();
-return view('admin.index', compact('totalProjets', 'totalUsers', 'totalBudget', 'projetsEnCours', 'recentProjets','derniersProjets'));
+        $recentProjets = Projet::latest()->take(5)->get();
+        $derniersProjets = Projet::with('departement')->latest()->take(5)->get();
+        return view('admin.index', compact('totalProjets', 'totalUsers', 'totalBudget', 'projetsEnCours', 'recentProjets','derniersProjets'));
     }
 }
