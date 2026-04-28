@@ -3,85 +3,103 @@
 @section('title', 'Gestion Utilisateurs | Optima')
 
 @section('content')
-    <main class="flex-1 p-10">
-        <div class="max-w-6xl mx-auto">
+    <main class="flex-1 p-6 md:p-16 w-full bg-white text-[#1a1a1a]">
+        <div class="max-w-5xl mx-auto">
 
             @if (session('success'))
-                <div id="alert-success"
-                    class="mb-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 font-bold rounded shadow-sm flex justify-between items-center transition-all">
-                    <span>✅ {{ session('success') }}</span>
-                    <button onclick="this.parentElement.remove()" class="text-emerald-900">✕</button>
+                <div id="alert-success" class="mb-12 pb-4 border-b border-emerald-500 text-emerald-600 text-xs font-bold tracking-widest uppercase animate-pulse">
+                    {{ session('success') }}
                 </div>
             @endif
 
-            <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
-                <div class="p-6 bg-gray-50 border-b">
-                    <h2 class="text-2xl font-bold text-gray-800">Gestion des Utilisateurs</h2>
+            <header class="mb-16">
+                <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-2 italic uppercase">Team</h2>
+                <p class="text-gray-400 text-xs font-medium tracking-[0.3em] uppercase">Administration des effectifs Optima</p>
+            </header>
+
+            <div class="hidden md:block">
+                <div class="grid grid-cols-12 gap-4 mb-6 pb-4 border-b border-gray-100 text-[10px] font-black text-gray-300 uppercase tracking-widest">
+                    <div class="col-span-5 italic">Collaborateur</div>
+                    <div class="col-span-2">Rôle</div>
+                    <div class="col-span-2">Salaire</div>
+                    <div class="col-span-3 text-right">Action</div>
                 </div>
 
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-100 text-gray-600 uppercase text-[10px] font-black tracking-wider">
-                            <th class="p-4 border-b">Nom & Prénom</th>
-                            <th class="p-4 border-b">Email</th>
-                            <th class="p-4 border-b">Rôle</th>
-                            <th class="p-4 border-b">Salaire (DH)</th>
-                            <th class="p-4 border-b text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @foreach ($users as $user)
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="p-4 font-semibold text-gray-700">
-                                    {{ $user->nom }} {{ $user->prenom }}
-                                </td>
-                                <td class="p-4 text-gray-500 text-xs italic">
-                                    {{ $user->email }}
-                                </td>
+                <div class="divide-y divide-gray-50">
+                    @foreach ($users as $user)
+                        <div class="grid grid-cols-12 gap-4 py-8 items-center group hover:bg-gray-50/30 transition-all duration-500">
+                            <div class="col-span-5">
+                                <h3 class="text-xl font-bold tracking-tight group-hover:pl-2 transition-all duration-300">{{ $user->nom }} {{ $user->prenom }}</h3>
+                                <p class="text-xs text-gray-400 font-medium italic mt-1">{{ $user->email }}</p>
+                            </div>
 
-                                <form action="{{ route('admin.users.updateFull', $user->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
+                            <form action="{{ route('admin.users.updateFull', $user->id) }}" method="POST" class="col-span-7 grid grid-cols-7 gap-4 items-center">
+                                @csrf @method('PATCH')
 
-                                    <td class="p-4">
-                                        <select name="role"
-                                            class="text-xs border-gray-300 rounded p-1 focus:ring-blue-500 bg-white font-bold uppercase text-blue-600">
-                                            <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User
-                                            </option>
-                                            <option value="employe" {{ $user->role == 'employe' ? 'selected' : '' }}>Employé
-                                            </option>
-                                            <option value="chef_projet"
-                                                {{ $user->role == 'chef_projet' ? 'selected' : '' }}>Chef Projet</option>
-                                            <option value="rh" {{ $user->role == 'rh' ? 'selected' : '' }}>RH</option>
-                                            <option value="comptable" {{ $user->role == 'comptable' ? 'selected' : '' }}>
-                                                Comptable</option>
-                                            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin
-                                            </option>
-                                        </select>
-                                    </td>
+                                <div class="col-span-2">
+                                    <select name="role" class="w-full bg-transparent border-none p-0 text-[11px] font-black uppercase tracking-tighter text-blue-600 focus:ring-0 cursor-pointer">
+                                        <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+                                        <option value="employe" {{ $user->role == 'employe' ? 'selected' : '' }}>Employé</option>
+                                        <option value="chef_projet" {{ $user->role == 'chef_projet' ? 'selected' : '' }}>Chef Projet</option>
+                                        <option value="rh" {{ $user->role == 'rh' ? 'selected' : '' }}>RH</option>
+                                        <option value="comptable" {{ $user->role == 'comptable' ? 'selected' : '' }}>Comptable</option>
+                                        <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                    </select>
+                                </div>
 
-                                    <td class="p-4">
-                                        <div class="flex items-center gap-1 border border-gray-300 rounded px-2 bg-gray-50">
-                                            <input type="number" name="salaire" value="{{ $user->salaire }}"
-                                                class="w-20 bg-transparent border-none p-1 text-sm font-black text-emerald-600 focus:ring-0"
-                                                step="0.01">
-                                            <span class="text-[10px] font-bold text-gray-400">DH</span>
-                                        </div>
-                                    </td>
+                                <div class="col-span-2">
+                                    <div class="flex items-baseline gap-1">
+                                        <input type="number" name="salaire" value="{{ $user->salaire }}" class="w-full bg-transparent border-none p-0 text-lg font-black text-gray-900 focus:ring-0 outline-none" step="0.01">
+                                        <span class="text-[9px] font-bold text-gray-300">DH</span>
+                                    </div>
+                                </div>
 
-                                    <td class="p-4 text-center">
-                                        <button type="submit"
-                                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded text-[10px] font-black shadow-sm transition uppercase">
-                                            Enregistrer
-                                        </button>
-                                    </td>
-                                </form>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                <div class="col-span-3 text-right">
+                                    <button type="submit" class="text-[10px] font-black uppercase tracking-widest border-b-2 border-black pb-1 hover:border-blue-600 hover:text-blue-600 transition-all active:scale-95">
+                                        Update
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="md:hidden space-y-12">
+                @foreach ($users as $user)
+                    <div class="flex flex-col border-l-2 border-gray-100 pl-4 py-2">
+                        <div class="mb-4">
+                            <span class="text-[9px] font-black text-blue-600 uppercase tracking-widest">{{ $user->role }}</span>
+                            <h3 class="text-2xl font-bold tracking-tighter">{{ $user->nom }} {{ $user->prenom }}</h3>
+                            <p class="text-[10px] text-gray-400 font-medium italic mt-0.5">{{ $user->email }}</p>
+                        </div>
+
+                        <form action="{{ route('admin.users.updateFull', $user->id) }}" method="POST" class="space-y-4">
+                            @csrf @method('PATCH')
+                            <div class="flex justify-between items-end border-b border-gray-50 pb-2">
+                                <div class="w-1/2">
+                                    <label class="text-[8px] font-black text-gray-300 uppercase block mb-1">Modify Role</label>
+                                    <select name="role" class="w-full bg-transparent border-none p-0 text-[11px] font-black uppercase tracking-tighter text-blue-600 focus:ring-0">
+                                        <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+                                        <option value="employe" {{ $user->role == 'employe' ? 'selected' : '' }}>Employé</option>
+                                        <option value="chef_projet" {{ $user->role == 'chef_projet' ? 'selected' : '' }}>Chef Projet</option>
+                                        <option value="rh" {{ $user->role == 'rh' ? 'selected' : '' }}>RH</option>
+                                        <option value="comptable" {{ $user->role == 'comptable' ? 'selected' : '' }}>Comptable</option>
+                                        <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                    </select>
+                                </div>
+                                <div class="w-1/3 text-right">
+                                    <label class="text-[8px] font-black text-gray-300 uppercase block mb-1">Salary</label>
+                                    <input type="number" name="salaire" value="{{ $user->salaire }}" class="w-full bg-transparent border-none p-0 text-right text-sm font-black text-gray-900 focus:ring-0" step="0.01">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full py-4 border border-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all">
+                                Confirm Changes
+                            </button>
+                        </form>
+                    </div>
+                @endforeach
             </div>
         </div>
     </main>
 @endsection
-

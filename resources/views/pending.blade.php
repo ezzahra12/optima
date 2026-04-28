@@ -5,65 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optima | Attente</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff; /* خلفية بيضاء نقية */
+        }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800">
+<body class="flex items-center justify-center min-h-screen p-8 text-slate-900">
 
     @if(auth()->user()->role == 'user')
-        <div class="py-12 min-h-screen flex items-center justify-center">
-            <div class="max-w-4xl mx-auto px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm rounded-[2.5rem] p-12 border border-gray-100 text-center">
+    <div class="max-w-lg w-full text-center">
 
-                    <div class="inline-flex items-center justify-center w-24 h-24 bg-amber-50 text-amber-500 rounded-3xl mb-8 rotate-3 shadow-sm border border-amber-100">
-                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-
-                    <h1 class="text-4xl font-black text-gray-900 mb-4 italic tracking-tight">Compte en attente</h1>
-                  <p class="text-gray-500 text-lg mb-10 font-medium">
-    Bienvenue
-    <span class="text-blue-600 font-bold uppercase">
-        {{ auth()->user()->name }}
-    </span>.
-    <br>
-    Votre compte est en cours de révision par l'administrateur.
-</p>
-                    <div class="p-8 bg-blue-50/50 rounded-3xl border border-blue-100 inline-block text-left max-w-sm">
-                        <h3 class="text-blue-800 font-black text-xs uppercase tracking-widest mb-3">Prochaine étape :</h3>
-                        <p class="text-blue-700 text-sm leading-relaxed">L'admin va vous assigner un rôle (RH, Chef de projet, etc.) pour débloquer les menus.</p>
-                    </div>
-
-                    <div class="mt-12 flex flex-col items-center gap-4">
-                        <button onclick="window.location.reload()" class="bg-blue-600 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-200 hover:bg-blue-700 transition active:scale-95">
-                            Actualiser le statut
-                        </button>
-
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="text-gray-400 font-bold text-[10px] uppercase hover:text-red-500 transition tracking-widest">
-                                Se déconnecter
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+        <div class="mb-16">
+            <span class="text-xl font-extrabold tracking-tighter text-[#4F46E5]">Optima.</span>
         </div>
 
- @else
-    @php
-        $user = auth()->user();
-        if ($user->role === 'admin') {
-            $url = route('admin.dashboard');
-        } elseif ($user->role === 'chef_projet') {
-            $url = route('chef.dashboard');
-        } elseif ($user->role === 'employe') {
-            $url = route('employe.dashboard');
-        } else {
-            $url = '/';
-        }
-    @endphp
-    <script>window.location.href = "{{ $url }}";</script>
-@endif
+        <main class="space-y-8">
+
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+                Compte en attente
+            </h1>
+
+            <p class="text-lg text-slate-500 leading-relaxed font-medium">
+                Bonjour <span class="text-slate-900 font-semibold">{{ auth()->user()->name }}</span>,
+                votre inscription a bien été reçue. Notre équipe examine vos informations pour valider votre accès.
+            </p>
+
+            <div class="py-6">
+                <h3 class="text-[#4F46E5] text-[11px] font-bold uppercase tracking-[0.3em] mb-3">Prochaine étape</h3>
+                <p class="text-slate-400 text-sm max-w-sm mx-auto leading-relaxed">
+                    Vous recevrez un email dès que votre rôle sera assigné. Ce processus prend généralement moins de 24 heures.
+                </p>
+            </div>
+
+            <div class="flex flex-col items-center gap-6 pt-6">
+                <button onclick="window.location.reload()"
+                    class="group relative inline-flex items-center gap-2 font-bold text-sm uppercase tracking-widest text-slate-900 hover:text-[#4F46E5] transition-colors">
+                    <span>Actualiser le statut</span>
+                    <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                </button>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="text-slate-300 font-semibold text-[10px] uppercase tracking-[0.2em] hover:text-red-400 transition-colors">
+                        Se déconnecter
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <footer class="mt-32 pt-8 border-t border-slate-50 text-[10px] text-slate-300 flex justify-between items-center uppercase tracking-widest font-medium">
+            <p>© 2026 Optima Suite</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-slate-500">Privacy</a>
+                <a href="#" class="hover:text-slate-500">Support</a>
+            </div>
+        </footer>
+    </div>
+
+    @else
+        @php
+            $user = auth()->user();
+            $url = match($user->role) {
+                'admin' => route('admin.dashboard'),
+                'chef_projet' => route('chef.dashboard'),
+                'employe' => route('employe.dashboard'),
+                default => '/',
+            };
+        @endphp
+        <script>window.location.href = "{{ $url }}";</script>
+    @endif
 
 </body>
 </html>
